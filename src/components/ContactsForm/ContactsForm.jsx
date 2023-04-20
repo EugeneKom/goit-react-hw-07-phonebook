@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import { FormStyle } from './ContactsForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
+import { FormStyle } from './ContactsForm.styled';
 import { addContact } from 'redux/contactSlice';
 
 export const ContactsForm = () => {
