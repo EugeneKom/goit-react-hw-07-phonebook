@@ -1,16 +1,27 @@
+import { Wrapper } from './App.styled';
+import { ContactsForm } from './ContactsForm/ContactsForm';
+import { ContactsList } from './ContactsList/ContactsList';
+import { ContactsWrapper } from './ContactsList/ContactsList.styled';
+import { FilterNames } from './FilterNames/FilterNames';
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <>
+      <Wrapper>
+        <Wrapper>
+          <h1>Phone book</h1>
+          <ContactsForm />
+        </Wrapper>
+        <ContactsWrapper>
+          <div>
+            <h2>Contacts</h2>
+            <FilterNames />
+          </div>
+          <div>
+            <ContactsList />
+          </div>
+        </ContactsWrapper>
+      </Wrapper>
+    </>
   );
 };
