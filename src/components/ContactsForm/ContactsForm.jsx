@@ -2,12 +2,19 @@ import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormStyle } from './ContactsForm.styled';
-import { addContact } from 'redux/contactSlice';
+import { addDataContact, fetchContacts } from 'redux/contactThunk';
+import { useEffect } from 'react';
+import { selectContacts } from 'components/utils/selectors';
 
 export const ContactsForm = () => {
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(selectContacts);
+
   const dispatch = useDispatch();
   const newId = nanoid();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const checkNameForMath = name => {
     let flag = true;
@@ -24,14 +31,11 @@ export const ContactsForm = () => {
     e.preventDefault();
     const form = e.target;
 
-    if (checkNameForMath(form.elements.name.value)) {
-      dispatch(
-        addContact({
-          name: form.elements.name.value,
-          number: form.elements.number.value,
-          id: nanoid(),
-        })
-      );
+    const contactName = form.elements.name.value;
+    const contactPhone = form.elements.number.value;
+
+    if (checkNameForMath(contactName)) {
+      dispatch(addDataContact({ name: contactName, phone: contactPhone }));
     }
     form.reset();
   };

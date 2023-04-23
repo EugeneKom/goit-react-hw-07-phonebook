@@ -1,19 +1,34 @@
+import {
+  selectContacts,
+  selectFilerContact,
+  selectIsLoading,
+} from 'components/utils/selectors';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from 'redux/contactSlice';
+import { ImSpinner } from 'react-icons/im';
+import { deleteContact } from 'redux/contactThunk';
+import { IconContext } from 'react-icons';
 
 export const ContactsList = () => {
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filterName = useSelector(state => state.filters.filter);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const filterName = useSelector(selectFilerContact);
   const dispatch = useDispatch();
 
+  console.log(ImSpinner);
+
   const createMarkup = contacts => {
-    return contacts.map(({ name, id, number }) => {
+    return contacts.map(({ name, id, phone }) => {
       return (
         <li key={id} id={id}>
           <span>{name}:</span>
-          <span>{number}</span>
-          <button onClick={() => dispatch(deleteContact(id))}>Delete</button>
+          <span>{phone}</span>
+          <button
+            disabled={isLoading}
+            onClick={() => dispatch(deleteContact(id))}
+          >
+            Delete
+          </button>
         </li>
       );
     });
@@ -26,12 +41,24 @@ export const ContactsList = () => {
     });
     return newArr;
   };
+
   return (
-    <ul>
-      {filterName === ''
-        ? createMarkup(contacts)
-        : createMarkup(renderFilterMarkup())}
-    </ul>
+    <>
+      {isLoading && (
+        <IconContext.Provider
+          value={{
+            className: 'spinner',
+          }}
+        >
+          <ImSpinner />
+        </IconContext.Provider>
+      )}
+      <ul>
+        {filterName === ''
+          ? createMarkup(contacts)
+          : createMarkup(renderFilterMarkup())}
+      </ul>
+    </>
   );
 };
 
