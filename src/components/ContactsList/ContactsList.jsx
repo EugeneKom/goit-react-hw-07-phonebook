@@ -15,8 +15,6 @@ export const ContactsList = () => {
   const filterName = useSelector(selectFilerContact);
   const dispatch = useDispatch();
 
-  console.log(ImSpinner);
-
   const createMarkup = contacts => {
     return contacts.map(({ name, id, phone }) => {
       return (
